@@ -2,6 +2,12 @@
 
 var count = 0;
 
+/**
+ * Bad Size Exception.
+ *
+ * @param {string} message - exception message
+ * @constructor
+ */
 function BadSizeException( message ) {
   this.name = 'BadSize';
   this.message = message;
@@ -18,6 +24,29 @@ function ensureValidSize( n ) {
   if ( n < 0 ) {
     throw new BadSizeException( 'Negative size' );
   }
+}
+
+/**
+ * Generates an array of functions.
+ *
+ * @param {number} n
+ * @param {function(number)} f
+ * @returns {Array.<function(number)>} - array of functions
+ */
+function generateFunctionArray( n, f ) {
+
+  ensureValidSize( n );
+
+  // Initialize fixed-size array
+  var a = new Array( n );
+
+  // Populate array
+  for ( var i = 0; i < n; i++ ) {
+    a[ i ] = f( i );
+  }
+
+  return a;
+
 }
 
 /**
@@ -134,19 +163,7 @@ function carefulMakeArray( n, v ) {
  * @returns {Array.<function(number)>} - array of inc functions
  */
 function incArray( n ) {
-
-  ensureValidSize( n );
-
-  // Initialize fixed-size array
-  var a = new Array( n );
-
-  // Populate array
-  for ( var i = 0; i < n; i++ ) {
-    a[ i ] = Inc( i );
-  }
-
-  return a;
-
+  return generateFunctionArray( n, Inc );
 }
 
 /**
@@ -159,17 +176,5 @@ function incArray( n ) {
  * @returns {Array.<function(number)>} - array of counter functions
  */
 function counterFromArray( n ) {
-
-  ensureValidSize( n );
-
-  // Initialize fixed-size array
-  var a = new Array( n );
-
-  // Populate array
-  for ( var i = 0; i < n; i++ ) {
-    a[ i ] = CounterFrom( i );
-  }
-
-  return a;
-
+  return generateFunctionArray( n, CounterFrom );
 }
